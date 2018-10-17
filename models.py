@@ -1,4 +1,4 @@
-from imports import db
+from imports import db, salt, hashpw
 from validate_email import validate_email
 
 # helper functions
@@ -79,7 +79,7 @@ class Students(object):
         "", "", "", "", "", "", "", "")
 
     def setName(self, name):
-        if type(name) == str and str(name).isdigit == False and len(name) > 0:
+        if type(name) == str and str(name).isdigit() == False and len(name) > 0:
             self.__name = name
             return True
         else:
@@ -120,12 +120,17 @@ class Students(object):
             return False
 
     def setPassword(self, password):
-        self.__password = password
+        self.__password = str(hashpw(password.encode('utf-8'), salt))
 
     def set(self):
-        insertStudent(self.__name, self.__gender, self.__email, self.__contact,
-                  self.__institute, self.__reg, self.__address, self.__password)
-
+        complete = insertStudent(self.__name, self.__gender, self.__email, self.__contact,
+                  self.__address, self.__institute, self.__reg, self.__password)
+        
+        if complete == True:
+            return "Success"
+        else:
+            return "Failed"
+        
 
 class Owners(object):
     # private instance variables

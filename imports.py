@@ -22,6 +22,12 @@ db = khaya['khaya']
 
 # keen analytics
 
+
 # paynow
+
+
+# bcrypt hashes
+salt = b'$2b$05$iIjhPDKsIoHJC7sDr4IVLO'
+
 
 # validators
