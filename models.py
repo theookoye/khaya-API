@@ -32,7 +32,7 @@ def insertAuthority(a, b, c, d):
     task = False
 
     try:
-        db.Owners.insert_one({'Name': a, 'Email': b, 'Contact': c,
+        db.Authorities.insert_one({'Name': a, 'Email': b, 'Contact': c,
                               'Password': d})
         task = True
         return task
@@ -80,14 +80,14 @@ class Students(object):
 
     def setName(self, name):
         if type(name) == str and str(name).isdigit() == False and len(name) > 0:
-            self.__name = name
+            self.__name = name.capitalize()
             return True
         else:
             return False
 
     def setGender(self, gender):
         if gender == 'Male' or gender == 'Female':
-           self.__gender = gender
+           self.__gender = gender.capitalize()
            return True
         else:
             return False
@@ -107,10 +107,18 @@ class Students(object):
             return False
 
     def setInstitute(self, institute):
-        self.__institute = institute
+        if type(institute)==str and str(institute).isdigit() == False:
+            self.__institute = institute.capitalize()
+            return True
+        else:
+            return False
 
     def setReg(self, reg):
-        self.__reg = reg
+        if type(reg)==str and (str(reg[0]).isalpha() and str(reg[-1]).isalpha() == True):
+            self.__reg = reg.capitalize()
+            return True
+        else:
+            return False
 
     def setAddress(self, address):
         if type(address) == list and len(address)==4:
@@ -121,15 +129,16 @@ class Students(object):
 
     def setPassword(self, password):
         self.__password = str(hashpw(password.encode('utf-8'), salt))
+        return True
 
     def set(self):
         complete = insertStudent(self.__name, self.__gender, self.__email, self.__contact,
                   self.__address, self.__institute, self.__reg, self.__password)
         
         if complete == True:
-            return "Success"
+            print("Success")
         else:
-            return "Failed"
+            print("Failed")
         
 
 class Owners(object):
@@ -138,7 +147,7 @@ class Owners(object):
         "", "", "", "", "", "", "", "")
 
     def setName(self, name):
-        if type(name) == str and str(name).isdigit == False and len(name) > 0:
+        if type(name) == str and str(name).isdigit() == False and len(name) > 0:
             self.__name = name
             return True
         else:
@@ -159,7 +168,11 @@ class Owners(object):
             return False
 
     def setContact(self, contact):
-        self.__contact = contact
+        if type(contact) == str:
+            self.__contact = str(contact).strip()
+            return True
+        else:
+            return False
 
     def setAddress(self, address):
         if type(address) == list and len(address)==4:
@@ -176,14 +189,21 @@ class Owners(object):
             return False
 
     def setPassword(self, password):
-        self.__password = password
+        self.__password = str(hashpw(password.encode('utf-8'), salt))
+        return True
 
     def setVerification(self, verified):
         self.__verified = False
+        return True
 
     def set(self):
-        insertOwner(self.__name, self.__gender, self.__email, self.__contact, self.__address,
+        complete = insertOwner(self.__name, self.__gender, self.__email, self.__contact, self.__address,
                 self.__totalProperties, self.__password, self.__verified)
+
+        if complete == True:
+            print("Success")
+        else:
+            print("Failed")
 
 
 class Authorities(object):
@@ -207,14 +227,23 @@ class Authorities(object):
             return False
 
     def setContact(self, contact):
-        self.__contact = contact
+        if type(contact)==str and str(contact).isdigit() == True:
+            self.__contact = contact
+            return True
+        else:
+            return False
 
     def setPassword(self, password):
-        self.__password = password
+        self.__password = str(hashpw(password.encode('utf-8'), salt))
+        return True
 
     def set(self):
-        insertAuthority(self.__name,  self.__email, self.__contact, self.__password)
-
+        complete = insertAuthority(self.__name,  self.__email, self.__contact, self.__password)
+        
+        if complete == True:
+            print("Success")
+        else:
+            print("Failed")
 
 class Properties(object):
 
@@ -264,7 +293,12 @@ class Properties(object):
         self.__likes = 0
 
     def set(self):
-        insertProperty(self.__ownerID, self.__address,  self.__facilities, self.__shared,  self.__verified,  self.__capacity, self.__media,  self.__room,  self.__description, self.__likes)
+        complete = insertProperty(self.__ownerID, self.__address,  self.__facilities, self.__shared,  self.__verified,  self.__capacity, self.__media,  self.__room,  self.__description, self.__likes)
+
+        if complete == True:
+            print("Success")
+        else:
+            print("Failed")
 
 class Reviews(object):
 
@@ -275,7 +309,11 @@ class Reviews(object):
         self.__propertyID = propertyID
 
     def setMessage(self, message):
-        self.__message = message
+        if type(message) == str and len(message) > 0:
+            self.__message = message
+            return True
+        else:
+            return False
 
     def setAnonymous(self, anonymous):
         if type(anonymous) == bool:
@@ -285,7 +323,14 @@ class Reviews(object):
             return False
 
     def setAuthor(self, author):
-        self.__author = author
+        if type(author) == str:
+            self.__author = author
+            return True
 
     def set(self):
-        insertReview(self.__propertyID, self.__message, self.__anonymous, self.__author)
+        complete = insertReview(self.__propertyID, self.__message, self.__anonymous, self.__author)
+
+        if complete == True:
+            print("Success")
+        else:
+            print("Failed")
