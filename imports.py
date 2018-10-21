@@ -1,4 +1,4 @@
-from flask import Flask, url_for, jsonify, Session, g, request, Response
+from flask import Flask, url_for, request, redirect, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
 from bcrypt import hashpw
