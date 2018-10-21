@@ -306,7 +306,11 @@ class Reviews(object):
     __propertyID, __message, __anonymous, __author = ("","","","")
 
     def setPropertyID(self, propertyID):
-        self.__propertyID = propertyID
+        if type(propertyID) == str:
+            self.__propertyID = propertyID
+            return True
+        else:
+            return False
 
     def setMessage(self, message):
         if type(message) == str and len(message) > 0:
